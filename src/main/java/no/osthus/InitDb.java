@@ -1,14 +1,18 @@
 package no.osthus;
 
-import no.osthus.domain.Person;
-import no.osthus.domain.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import no.osthus.domain.*;
+
 
 public class InitDb {
+    public InitDb(PersonRepository personRepo, CompanyRepository companyRepository) {
+        Company finn = new Company(-3002l, "FINN.no");
+        companyRepository.save(finn);
 
-    @Autowired
-    public InitDb(PersonRepository repo) {
-        Person p = new Person("test", "test", "me@mail.com", 123l);
-        repo.save(p);
+
+        Person p = new Person("Ola", "Hansen", "me@mail.com", 123l);
+        p = personRepo.save(p);
+
+        p.addCurrentCompany(finn, 2013);
+        personRepo.save(p);
     }
 }

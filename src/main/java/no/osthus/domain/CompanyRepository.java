@@ -4,9 +4,7 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface PersonRepository extends GraphRepository<Person> {
+public interface CompanyRepository extends GraphRepository<Company> {
 
-    Person findOne(Long id);
-
-    <C extends Person> C save(C person);
+    <C extends Company> C save(C company);
 }
