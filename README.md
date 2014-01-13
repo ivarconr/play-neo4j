@@ -1,4 +1,4 @@
-jersey2-spring3-webapp
+README;
 ======================
 
-Webapp integrating jersey 2 and spring 3
+Webapp integrating Spring WEB and neo4j
