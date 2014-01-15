@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import scala.collection.Iterator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -61,11 +61,11 @@ public class PersonRepositoryTest {
         ExecutionResult result;
         Transaction ignored = db.beginTx();
         try {
-            result = engine.execute( "start n=node(*) where n.__type__ = 'no.osthus.domain.Person' RETURN n" );
-            Iterator<Node> n_column = result.columnAs( "n" );
+            result = engine.execute( "START n=node(*) WHERE has (n.__type__) and n.__type__ ='no.osthus.domain.Person' RETURN n" );
+            Iterator<Node> n_column = result.javaColumnAs("n");
+            List<Node> nodes = Lists.newArrayList(n_column);
 
-            Iterator<Node> ddds = IteratorUtil.asIterable(n_column);
-             assertThat(result.toString(), is("Ola"));
+            assertThat(nodes.get(0).getProperty("firstName").toString(), is("Ola"));
         } finally {
             ignored.finish();
         }
