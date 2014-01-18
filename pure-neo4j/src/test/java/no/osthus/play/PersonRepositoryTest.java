@@ -81,4 +81,24 @@ public class PersonRepositoryTest {
         assertThat(persons.size(), is(2));
     }
 
+    @Test
+    public void should_have_work_in_company_relationship() {
+        Company company = new Company("Selskapet", 123l);
+        new CompanyRepository(graphDb).create(company);
+
+        Person ola = new Person("Ola Hansen", 123l);
+        ola.addRelationship(new WorksAtRelationship(ola, company, 1985));
+        /*long nodeId = personRepository.create(ola);
+
+
+
+        try ( Transaction tx = graphDb.beginTx() ){
+            Node foundNode = graphDb.getRelationshipTypes(nodeId);
+            assertThat( foundNode.getId(), is( nodeId ) );
+            assertThat( (String) foundNode.getProperty( "name" ), is( p.getName() ) );
+            tx.success();
+        }*/
+
+    }
+
 }
