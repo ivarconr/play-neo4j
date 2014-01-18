@@ -1,6 +1,7 @@
 package no.osthus.play;
 
 import no.osthus.play.web.MyResource;
+import no.osthus.play.web.PersonResource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -24,7 +25,7 @@ public class HelloWorld extends HttpServlet {
     }
     public static void main(String[] args) throws Exception{
         URI baseUri = UriBuilder.fromUri("http://localhost/").port(Integer.valueOf(System.getenv("PORT"))).build();
-        ResourceConfig config = new ResourceConfig(MyResource.class);
+        ResourceConfig config = new ResourceConfig(PersonResource.class);
 
         //Server server = new Server());
         Server server = JettyHttpContainerFactory.createServer(baseUri, config);

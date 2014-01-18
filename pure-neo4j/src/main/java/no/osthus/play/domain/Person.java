@@ -1,17 +1,14 @@
 package no.osthus.play.domain;
 
+import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.Label;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Person {
-    public static final Label TYPE = new Label() {
-        @Override
-        public String name() {
-            return "Person";
-        }
-    };
+    public static final Label TYPE = DynamicLabel.label("Person");
+
     private final Long id;
     private final String name;
     private final Long loginId;
@@ -45,5 +42,14 @@ public class Person {
 
     public void addRelationship(WorksAtRelationship worksAtRelationship) {
         this.worksAtRelationships.add(worksAtRelationship);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", loginId=" + loginId +
+                '}';
     }
 }
