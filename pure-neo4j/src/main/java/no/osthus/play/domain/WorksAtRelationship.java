@@ -1,4 +1,4 @@
-package no.osthus.play;
+package no.osthus.play.domain;
 
 public class WorksAtRelationship {
     private final Person person;

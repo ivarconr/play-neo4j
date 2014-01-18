@@ -1,4 +1,4 @@
-package no.osthus.play;
+package no.osthus.play.domain;
 
 import org.neo4j.graphdb.Label;
 

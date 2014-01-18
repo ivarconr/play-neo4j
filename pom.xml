@@ -11,8 +11,18 @@
 
     <modules>
         <module>pure-neo4j</module>
-        <module>spring-neo4j</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <!-- Convenience profile to have all modules active in IDE -->
+            <id>all</id>
+            <modules>
+                <module>pure-neo4j</module>
+                <module>spring-neo4j</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>play-neo4j</finalName>
@@ -31,7 +41,6 @@
     </build>
 
     <dependencies>
-
     </dependencies>
 
 </project>

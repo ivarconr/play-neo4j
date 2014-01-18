@@ -1,7 +1,8 @@
-package no.osthus.play;
+package no.osthus.play.domain;
 
 
 import com.google.common.collect.Lists;
+import no.osthus.play.domain.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
