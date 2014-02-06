@@ -6,6 +6,7 @@ import org.neo4j.rest.graphdb.entity.RestNode;
 import org.neo4j.rest.graphdb.query.RestCypherQueryEngine;
 import org.neo4j.rest.graphdb.util.QueryResult;
 
+import java.net.URI;
 import java.util.*;
 
 import com.google.common.base.Optional;
@@ -14,7 +15,13 @@ public class CoffeeRepository {
     private final RestGraphDatabase gds;
 
     public CoffeeRepository(String SERVER_ROOT_URI) {
-        this.gds = new RestGraphDatabase(SERVER_ROOT_URI + "/db/data/");
+        String userInfo = URI.create(SERVER_ROOT_URI).getUserInfo();
+        String[] credentials = new String[2];
+        if(userInfo != null) {
+            credentials = userInfo.split(":");
+        }
+
+        this.gds = new RestGraphDatabase(SERVER_ROOT_URI + "/db/data/", credentials[0], credentials[1]);
     }
 
     public boolean verifyConnection() {

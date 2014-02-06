@@ -11,6 +11,7 @@ import static org.junit.Assert.assertThat;
 
 public class CoffeeRepositoryTest extends AppTest {
     final String SERVER_ROOT_URI  = "http://localhost:7474";
+//    final String SERVER_ROOT_URI  = "http://test:vPoqq1rIfPNIenybRCXC@test.sb01.stations.graphenedb.com:24789";
     private CoffeeRepository coffeeRepository;
 
     @Before
