@@ -36,6 +36,8 @@ public class PersonRepository {
 
     public List<Person> all() {
         List<Person> persons =  new ArrayList<>();
+
+
         ExecutionResult result;
 
         try ( Transaction tx = graphDb.beginTx() ) {

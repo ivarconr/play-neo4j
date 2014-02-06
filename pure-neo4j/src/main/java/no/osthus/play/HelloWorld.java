@@ -1,5 +1,8 @@
 package no.osthus.play;
 
+import no.osthus.play.domain.Coffee;
+import no.osthus.play.domain.CoffeeRepository;
+import no.osthus.play.web.CoffeeResource;
 import no.osthus.play.web.MyResource;
 import no.osthus.play.web.PersonResource;
 import org.eclipse.jetty.server.Server;
@@ -21,11 +24,20 @@ public class HelloWorld extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        resp.getWriter().print("Hello from Java!\n");
+
+        String uri = System.getenv("GRAPHENEDB_URL");;
+        CoffeeRepository coffeeRepository = new CoffeeRepository(uri);
+
+        resp.getWriter().print("Coffee found:!\n");
+        for(Coffee coffee : coffeeRepository.findAll()) {
+            resp.getWriter().print(coffee.id.get() + ":" + coffee.name + "\n");
+        }
+
     }
     public static void main(String[] args) throws Exception{
         URI baseUri = UriBuilder.fromUri("http://localhost/").port(Integer.valueOf(System.getenv("PORT"))).build();
-        ResourceConfig config = new ResourceConfig(PersonResource.class);
+        ResourceConfig config = new ResourceConfig(CoffeeResource.class);
+
 
         //Server server = new Server());
         Server server = JettyHttpContainerFactory.createServer(baseUri, config);

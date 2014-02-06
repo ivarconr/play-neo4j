@@ -22,8 +22,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class PersonRepositoryTest {
+    public static final String HTTP_URI = "http://localhost:7473";
+
     private PersonRepository personRepository;
     private GraphDatabaseService graphDb;
+
+
 
 
     @Before
