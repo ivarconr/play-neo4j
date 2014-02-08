@@ -83,6 +83,11 @@
             <artifactId>jsp-api</artifactId>
             <version>2.1</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.ws.rs</groupId>-->
+            <!--<artifactId>javax.ws.rs-api</artifactId>-->
+            <!--<version>2.0</version>-->
+        <!--</dependency>-->
 
         <!-- Hibernate’s implementation of JSR-303. -->
         <dependency>
@@ -117,18 +122,20 @@
             <artifactId>guava</artifactId>
             <version>15.0</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-rest-graphdb</artifactId>
+            <version>2.0.0-M06</version>
+        </dependency>
+
+        <!--Used to set up a local neo4j test server-->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-kernel</artifactId>
@@ -149,16 +156,22 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+
+
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rest-graphdb</artifactId>
-            <version>2.0.0-M06</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>1.3</version>
+            <scope>test</scope>
         </dependency>
+
+
     </dependencies>
     <repositories>
         <repository>
