@@ -2,10 +2,7 @@ package no.osthus.play.domain;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.neo4j.cypher.ExecutionEngine;
 import org.neo4j.cypher.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -28,22 +25,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class IntegrationTestSupport {
-    private static CommunityNeoServer server;
-    private static GraphDatabaseService grapdb;
+    protected static CommunityNeoServer server;
+    protected static GraphDatabaseService grapdb;
+    protected static ExecutionEngine engine;
 
     @BeforeClass
     public static void setup() throws IOException {
         server = CommunityServerBuilder.server().build();
         server.start();
         grapdb = server.getDatabase().getGraph();
-        loadDb();
+        engine = new ExecutionEngine(grapdb, StringLogger.SYSTEM);
     }
 
-    private static void loadDb() throws IOException {
+    @Before
+    public void loadDb() throws IOException {
         InputStream stream = IntegrationTestSupport.class.getClassLoader().getResourceAsStream("init_db.cypher");
         String query = CharStreams.toString(new InputStreamReader(stream, "UTF-8"));
-        ExecutionEngine engine = new ExecutionEngine(grapdb, StringLogger.SYSTEM);
         engine.execute(query);
+    }
+
+    @After
+    public void clearDb() {
+        engine.execute("MATCH (c)-[r]-() delete c, r");
     }
 
     @AfterClass

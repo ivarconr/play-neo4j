@@ -3,6 +3,13 @@ package no.osthus.play.domain;
 import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
+import org.neo4j.cypher.ExecutionResult;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterator;
+import org.neo4j.graphdb.Transaction;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.core.Is.is;
@@ -11,10 +18,12 @@ import static org.junit.Assert.assertThat;
 public class CoffeeRepositoryTest extends IntegrationTestSupport {
     final String SERVER_ROOT_URI  = "http://localhost:7474";
     private CoffeeRepository coffeeRepository;
+    private FarmRepository farmRepository;
 
     @Before
     public void setup_dependencies() {
         coffeeRepository = new CoffeeRepository(SERVER_ROOT_URI);
+        farmRepository = new FarmRepository(SERVER_ROOT_URI);
     }
 
     @Test
@@ -48,5 +57,27 @@ public class CoffeeRepositoryTest extends IntegrationTestSupport {
     @Test
     public void should_return_size_of_repo() {
         assertThat(coffeeRepository.count(), greaterThanOrEqualTo(2l));
+    }
+
+    @Test
+    public void create_farmed_relation_ship() {
+        Coffee c   = coffeeRepository.save(new Coffee("Coffee alala"));
+        Farm f = farmRepository.save(new Farm("Farmville"));
+        coffeeRepository.createFarmedRelationship(c, f);
+
+        Transaction transaction = null;
+        try {
+            transaction = grapdb.beginTx();
+            ExecutionResult result = engine.execute("MATCH (c)-[:FARMED_BY]-(f) return c, f");
+            ResourceIterator<Map<String,Object>> mapResourceIterator = result.javaIterator();
+            Node cNode = (Node)mapResourceIterator.next().get("c");
+            Node fNode = (Node)mapResourceIterator.next().get("f");
+            System.out.println(cNode.getProperty("name"));
+            System.out.println(fNode.getProperty("name"));
+
+        } finally {
+            transaction.success();
+        }
+
     }
 }

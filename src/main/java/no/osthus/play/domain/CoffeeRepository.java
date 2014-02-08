@@ -88,4 +88,10 @@ public class CoffeeRepository implements Repository<Coffee> {
         values.put(key, value.or(0L));
         return values;
     }
+
+    public void createFarmedRelationship(Coffee c, Farm f) {
+        Node cNode = gds.getNodeById(c.getId());
+        Node fNode = gds.getNodeById(f.getId().get());
+        cNode.createRelationshipTo(fNode, DynamicRelationshipType.withName("FARMED_BY"));
+    }
 }
