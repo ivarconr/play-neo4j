@@ -1,6 +1,5 @@
 package no.osthus.play;
 
-import org.codehaus.jackson.map.SerializationConfig;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
