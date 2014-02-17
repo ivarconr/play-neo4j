@@ -25,16 +25,15 @@ public class FarmRepository implements Repository<Farm> {
         engine = new RestCypherQueryEngine(gds.getRestAPI());
     }
 
-    @Override
-    public Farm save(Farm farm) {
+    public Farm save(String name) {
         Node n = null;
         try ( Transaction tx = gds.beginTx() ) {
             n = gds.createNode();
-            n.setProperty( "name", farm.getName());
+            n.setProperty( "name", name);
             n.addLabel(DynamicLabel.label("Coffee"));
             tx.success();
         }
-        return new Farm(farm.getName(), n.getId());
+        return new Farm(n);
     }
 
     @Override

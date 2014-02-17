@@ -1,6 +1,5 @@
 package no.osthus.play.web;
 
-import com.google.common.collect.Lists;
 import no.osthus.play.domain.Coffee;
 import no.osthus.play.domain.CoffeeRepository;
 
@@ -8,7 +7,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 @Path("/coffees")
 public class CoffeeResource {

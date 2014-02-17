@@ -1,55 +1,65 @@
 package no.osthus.play.domain;
 
 
-import com.google.common.base.Optional;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicRelationshipType;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
+import java.util.List;
+
+
+//Todo:
+// probably better to fetch all relations eagerly in constructor
+// instead of loading em lazily?
 public class Coffee {
-    final public Optional<Long> id;
-    final public String name;
+    private final Node underlyingNode;
 
-    public Coffee(String name) {
-        this.id = Optional.absent();
-        this.name = name;
-    }
-
-    public Coffee(Long id, String name) {
-        this.id = Optional.fromNullable(id);
-        this.name = name;
+    public Coffee(Node node) {
+        this.underlyingNode = node;
     }
 
     public String getName() {
-        return name;
+        return underlyingNode.getProperty("name").toString();
     }
 
     public Long getId() {
-        return id.orNull();
+        return underlyingNode.getId();
+    }
+
+    public Farm getFarmedBy() {
+        Relationship rel = underlyingNode.getSingleRelationship(
+                DynamicRelationshipType.withName("IS_FARMED_BY"),
+                Direction.OUTGOING);
+        if(rel != null) {
+            return new Farm(rel.getEndNode());
+        } else {
+            return null;
+        }
+    }
+
+    //TODO: figure out way jackson does not support iterable here.
+    public List<BeanType> getBeans() {
+        Iterable<Relationship> beanTypes = underlyingNode.getRelationships(
+                DynamicRelationshipType.withName("BEAN_TYPE"),
+                Direction.OUTGOING);
+
+        return Lists.newArrayList(Iterables.transform(beanTypes, new Function<Relationship, BeanType>() {
+            @Override
+            public BeanType apply(Relationship relationship) {
+                return new BeanType(relationship.getEndNode());
+            }
+        }));
     }
 
     @Override
     public String toString() {
         return "Coffee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Coffee coffee = (Coffee) o;
-
-        if (!id.equals(coffee.id)) return false;
-        if (!name.equals(coffee.name)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
     }
 }

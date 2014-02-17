@@ -2,11 +2,11 @@ package no.osthus.play.domain;
 
 import org.neo4j.graphdb.Node;
 
-public class Farm {
+public class BeanType {
     private final Node underlyingNode;
 
-    public Farm(Node node) {
-        this.underlyingNode = node;
+    public BeanType(Node underlyingNode) {
+        this.underlyingNode = underlyingNode;
     }
 
     public String getName() {

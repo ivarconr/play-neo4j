@@ -8,11 +8,13 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 
-import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 public class CoffeeRepositoryTest extends IntegrationTestSupport {
@@ -34,24 +36,27 @@ public class CoffeeRepositoryTest extends IntegrationTestSupport {
 
     @Test
     public void should_create_new_coffee() {
-        Coffee saved = coffeeRepository.save(new Coffee("Test"));
-        assertThat(saved.id.isPresent(), is(true));
+        Coffee saved = coffeeRepository.save("Test");
+        assertThat(saved.getId(), greaterThan(0l));
+
+        coffeeRepository.remove(saved);
     }
 
     @Test
     public void should_find_coffee() {
-        Coffee saved   = coffeeRepository.save(new Coffee("Test"));
-        Coffee fetched = coffeeRepository.findOne(saved.id.get()).get();
+        Coffee saved   = coffeeRepository.save("Test");
+        Coffee fetched = coffeeRepository.findOne(saved.getId()).get();
 
-        assertThat(saved, is(fetched));
+        assertThat(saved.getId(), is(fetched.getId()));
+        assertThat(saved.getName(), is(fetched.getName()));
     }
 
     @Test
     public void should_remove_coffee() {
-        Coffee saved   = coffeeRepository.save(new Coffee("Test"));
+        Coffee saved   = coffeeRepository.save("Test");
         coffeeRepository.remove(saved);
 
-        assertThat(coffeeRepository.findOne(saved.id.get()).isPresent(), is(false));
+        assertThat(coffeeRepository.findOne(saved.getId()).isPresent(), is(false));
     }
 
     @Test
@@ -60,15 +65,27 @@ public class CoffeeRepositoryTest extends IntegrationTestSupport {
     }
 
     @Test
+    public void should_return_coffee_with_farm() {
+        Coffee coffee = coffeeRepository.findAll().iterator().next();
+        assertThat(coffee.getFarmedBy(), is(not(nullValue())));
+    }
+
+    @Test
+    public void should_return_coffee_with_bean_type() {
+        Coffee coffee = coffeeRepository.findAll().iterator().next();
+        assertThat(Iterables.size(coffee.getBeans()), greaterThan(0));
+    }
+
+    @Test
     public void create_farmed_relation_ship() {
-        Coffee c   = coffeeRepository.save(new Coffee("Coffee alala"));
-        Farm f = farmRepository.save(new Farm("Farmville"));
+        Coffee c   = coffeeRepository.save("Coffee alala");
+        Farm f = farmRepository.save("Farmville");
         coffeeRepository.createFarmedRelationship(c, f);
 
         Transaction transaction = null;
         try {
             transaction = grapdb.beginTx();
-            ExecutionResult result = engine.execute("MATCH (c)-[:FARMED_BY]-(f) return c, f");
+            ExecutionResult result = engine.execute("MATCH (c)-[:IS_FARMED_BY]-(f) return c, f");
             ResourceIterator<Map<String,Object>> mapResourceIterator = result.javaIterator();
             Node cNode = (Node)mapResourceIterator.next().get("c");
             Node fNode = (Node)mapResourceIterator.next().get("f");

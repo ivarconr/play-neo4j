@@ -18,10 +18,9 @@ public class FarmRepositoryTest extends IntegrationTestSupport {
 
     @Test
     public void should_create_farm() {
-        Farm farm = new Farm("Test");
-        Farm stored = farmRepository.save(farm);
+        Farm stored = farmRepository.save("Test");
 
-        assertThat(stored.getName(), is(farm.getName()));
+        assertThat(stored.getName(), is("Test"));
     }
 
 
