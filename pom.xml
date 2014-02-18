@@ -9,6 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <name>play-neo4j</name>
 
+    <properties>
+        <jersey.version>2.5.1</jersey.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty.version>9.1.2.v20140210</jetty.version>
+    </properties>
+
+
+
     <build>
         <finalName>play-neo4j</finalName>
         <plugins>
@@ -31,6 +39,9 @@
                         <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals><goal>copy-dependencies</goal></goals>
+                        <configuration>
+                            <includeScope>compile</includeScope>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -38,41 +49,51 @@
     </build>
 
 
+
+
     <dependencies>
         <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-jetty-servlet</artifactId>
-            <version>2.5.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>javax.ws.rs-api</artifactId>
-                    <groupId>javax.ws.rs</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>1.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-servlet</artifactId>
+            <version>1.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>1.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.1.2.v20140210</version>
+            <version>${jetty.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>9.1.2.v20140210</version>
+            <version>${jetty.version}</version>
         </dependency>
 
         <!-- Logging -->
@@ -93,25 +114,26 @@
             <version>15.0</version>
         </dependency>
 
+
+
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-rest-graphdb</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <!--Used to set up a local neo4j test server-->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
             <version>2.0.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rest-graphdb</artifactId>
-            <version>2.0.0-M06</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jackson-jaxrs</artifactId>
-                    <groupId>org.codehaus.jackson</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>neo4j-kernel</artifactId>
+            <version>2.0.1</version>
+            <scope>provided</scope>
         </dependency>
-
-        <!--Used to set up a local neo4j test server-->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-kernel</artifactId>
@@ -132,7 +154,6 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>

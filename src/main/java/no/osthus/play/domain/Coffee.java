@@ -41,8 +41,8 @@ public class Coffee {
         }
     }
 
-    //TODO: figure out way jackson does not support iterable here.
-    public List<BeanType> getBeans() {
+    //TODO: figure out why jackson does not support iterable here.
+    public Iterable<BeanType> getBeans() {
         Iterable<Relationship> beanTypes = underlyingNode.getRelationships(
                 DynamicRelationshipType.withName("BEAN_TYPE"),
                 Direction.OUTGOING);
