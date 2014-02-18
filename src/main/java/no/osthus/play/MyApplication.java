@@ -1,6 +1,7 @@
 package no.osthus.play;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -21,6 +22,11 @@ public class MyApplication {
         jerseyServlet.setInitOrder(1);
         jerseyServlet.setInitParameter("com.sun.jersey.config.property.packages", "no.osthus.play");
         jerseyServlet.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
+        jerseyServlet.setInitParameter("com.sun.jersey.config.property.WebPageContentRegex",
+                        "(/(image|js|css)/?.*)|"+
+                        "(/.*\\.html)|(/favicon\\.ico)|" +
+                        "(/robots\\.txt)");
+
 
         try {
             server.start();
