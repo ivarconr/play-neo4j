@@ -66,7 +66,7 @@ public class FarmRepository implements Repository<Farm> {
 
     @Override
     public Iterable<Farm> findAll() {
-        QueryResult<Map<String,Object>> result = engine.query("MATCH (n:Coffee) return n;", map("id", 0l));
+        QueryResult<Map<String,Object>> result = engine.query("MATCH (n:Farm) return n;", map("id", 0l));
 
         return Iterables.transform(result, new Function<Map<String, Object>, Farm>() {
             @Override

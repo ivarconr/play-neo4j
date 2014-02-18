@@ -2,7 +2,7 @@ package no.osthus.play.web;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import no.osthus.play.View.CoffeeName;
+import no.osthus.play.view.CoffeeName;
 import no.osthus.play.domain.Coffee;
 import no.osthus.play.domain.CoffeeRepository;
 
